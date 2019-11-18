@@ -1,0 +1,27 @@
+{{ define "index.content"}}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Lorem Ipsum</h1>
+        <p class="lead">Curabitur justo erat, sodales at suscipit vitae, luctus consectetur quam</p>
+    </div>
+</div>
+<hr>
+<div class="container">
+    <table>
+        <thead>
+            <td></td>
+            <td>Name</td>
+            <td>Description</td>
+        </thead>
+        {{ range . }}
+        <tr>
+            <td>
+                <img src="/assets/img/{{ .Image }}" width="80px" heght="100px" />
+            </td>
+            <td>{{ .Name }}</td>
+            <td>{{ .Description }}</td>
+        </tr>
+        {{ end }}
+    </table>
+</div>
+{{ end }}

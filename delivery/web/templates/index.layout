@@ -1,0 +1,5 @@
+{{ define "index.layout" }}
+{{ template "navbar" . }}
+{{ template "index.content" . }}
+{{ template "footer" . }}
+{{ end }}

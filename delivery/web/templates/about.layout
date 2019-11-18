@@ -1,0 +1,7 @@
+{{ define "about.layout" }}
+
+{{ template "navbar" . }}
+{{ template "about.content" . }}
+{{ template "footer" . }}
+
+{{ end }}
