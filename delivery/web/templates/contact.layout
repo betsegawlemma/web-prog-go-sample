@@ -1,7 +1,0 @@
-{{ define "contact.layout" }}
-
-{{ template "navbar" . }}
-{{ template "contact.content" . }}
-{{ template "footer" . }}
-
-{{ end }}

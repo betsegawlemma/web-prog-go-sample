@@ -1,0 +1,90 @@
+package repository
+
+import (
+	"database/sql"
+	"errors"
+
+	"github.com/betsegawlemma/restaurant/entity"
+)
+
+// PsqlCategoryRepository implements the
+// menu.CategoryRepository interface
+type PsqlCategoryRepository struct {
+	conn *sql.DB
+}
+
+// NewPsqlCategoryRepository will create an object of PsqlCategoryRepository
+func NewPsqlCategoryRepository(Conn *sql.DB) *PsqlCategoryRepository {
+	return &PsqlCategoryRepository{conn: Conn}
+}
+
+// Categories returns all cateogories from the database
+func (pr *PsqlCategoryRepository) Categories() ([]entity.Category, error) {
+
+	rows, err := pr.conn.Query("SELECT * FROM categories;")
+	if err != nil {
+		return nil, errors.New("Could not query the database")
+	}
+	defer rows.Close()
+
+	ctgs := []entity.Category{}
+
+	for rows.Next() {
+		category := entity.Category{}
+		err = rows.Scan(&category.ID, &category.Name, &category.Description, &category.Image)
+		if err != nil {
+			return nil, err
+		}
+		ctgs = append(ctgs, category)
+	}
+
+	return ctgs, nil
+}
+
+// Category returns a category with a given id
+func (pr *PsqlCategoryRepository) Category(id int) (entity.Category, error) {
+
+	row := pr.conn.QueryRow("SELECT * FROM categories WHERE id = $1", id)
+
+	c := entity.Category{}
+
+	err := row.Scan(&c.ID, &c.Name, &c.Description, &c.Image)
+	if err != nil {
+		return c, err
+	}
+
+	return c, nil
+}
+
+// UpdateCategory updates a given object with a new data
+func (pr *PsqlCategoryRepository) UpdateCategory(c entity.Category) error {
+
+	_, err := pr.conn.Exec("UPDATE categories SET name=$1,description=$2, image=$3 WHERE id=$4", c.Name, c.Description, c.Image, c.ID)
+	if err != nil {
+		return errors.New("Update has failed")
+	}
+
+	return nil
+}
+
+// DeleteCategory removes a category from a database by its id
+func (pr *PsqlCategoryRepository) DeleteCategory(id int) error {
+
+	_, err := pr.conn.Exec("DELETE FROM categories WHERE id=$1", id)
+	if err != nil {
+		return errors.New("Delete has failed")
+	}
+
+	return nil
+}
+
+// StoreCategory stores new category information to database
+func (pr *PsqlCategoryRepository) StoreCategory(c entity.Category) error {
+
+	_, err := pr.conn.Exec("INSERT INTO categories (name,description,image) values($1, $2, $3)", c.Name, c.Description, c.Image)
+	if err != nil {
+		return errors.New("Insertion has failed")
+	}
+
+	return nil
+}

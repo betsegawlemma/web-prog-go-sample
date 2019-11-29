@@ -1,65 +1,74 @@
 package service
 
 import (
-	"bytes"
-	"encoding/gob"
-	"errors"
-	"io/ioutil"
-
-	"github.com/betsegawlemma/webproggob/entity"
+	"github.com/betsegawlemma/restaurant/entity"
+	"github.com/betsegawlemma/restaurant/menu"
 )
 
-// CategoryService represents gob implementation of menu.CategoryService
+// CategoryService implements menu.CategoryService interface
 type CategoryService struct {
-	FileName string
+	categoryRepo menu.CategoryRepository
 }
 
-// NewCategoryService returns new Category Service
-func NewCategoryService(fileName string) *CategoryService {
-	return &CategoryService{FileName: fileName}
+// NewCategoryService will create new CategoryService object
+func NewCategoryService(CatRepo menu.CategoryRepository) *CategoryService {
+	return &CategoryService{categoryRepo: CatRepo}
 }
 
-// Categories returns all categories read from gob file
-func (cs CategoryService) Categories() ([]entity.Category, error) {
+// Categories returns list of categories
+func (cs *CategoryService) Categories() ([]entity.Category, error) {
 
-	raw, err := ioutil.ReadFile(cs.FileName)
-
-	if err != nil {
-		return nil, errors.New("File could not be read")
-	}
-
-	buffer := bytes.NewBuffer(raw)
-
-	dec := gob.NewDecoder(buffer)
-
-	var ctgs []entity.Category
-
-	err = dec.Decode(&ctgs)
+	categories, err := cs.categoryRepo.Categories()
 
 	if err != nil {
-		return nil, errors.New("Decoding error")
+		return nil, err
 	}
 
-	return ctgs, nil
+	return categories, nil
 }
 
-// StoreCategories stores a batch of categories data to the a gob file
-func (cs CategoryService) StoreCategories(ctgs []entity.Category) error {
+// StoreCategory persists new category information
+func (cs *CategoryService) StoreCategory(category entity.Category) error {
 
-	buffer := new(bytes.Buffer)
-	encoder := gob.NewEncoder(buffer)
-
-	err := encoder.Encode(ctgs)
+	err := cs.categoryRepo.StoreCategory(category)
 
 	if err != nil {
-		return errors.New("Data encoding has failed")
+		return err
 	}
 
-	err = ioutil.WriteFile(cs.FileName, buffer.Bytes(), 0644)
+	return nil
+}
+
+// Category returns a category object with a given id
+func (cs *CategoryService) Category(id int) (entity.Category, error) {
+
+	c, err := cs.categoryRepo.Category(id)
 
 	if err != nil {
-		return errors.New("Writing to a file has failed")
+		return c, err
 	}
 
+	return c, nil
+}
+
+// UpdateCategory updates a cateogory with new data
+func (cs *CategoryService) UpdateCategory(category entity.Category) error {
+
+	err := cs.categoryRepo.UpdateCategory(category)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeleteCategory delete a category by its id
+func (cs *CategoryService) DeleteCategory(id int) error {
+
+	err := cs.categoryRepo.DeleteCategory(id)
+	if err != nil {
+		return err
+	}
 	return nil
 }

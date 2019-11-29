@@ -1,5 +1,14 @@
+{{ define "about.layout" }}
+
+{{ template "navbar" . }}
+{{ template "about.content" . }}
+{{ template "footer" . }}
+
+{{ end }}
+
 {{ define "about.content" }}
 <div class="container">
+    <h2>About</h2>
     <p>Suspendisse eu ultricies nisl. Morbi vestibulum arcu lorem, non aliquam leo commodo id. Vestibulum ante
         ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce sagittis convallis
         ullamcorper. Nam ac interdum nisl. Sed mauris nunc, lobortis sit amet faucibus quis, tempus a libero.

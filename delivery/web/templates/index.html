@@ -1,4 +1,12 @@
-{{ define "index.content"}}
+{{ define "index.layout" }}
+
+{{ template "navbar" . }}
+{{ template "index.content" . }}
+{{ template "footer" . }}
+
+{{ end }}
+
+{{ define "index.content" }}
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1 class="display-4">Lorem Ipsum</h1>
@@ -7,21 +15,17 @@
 </div>
 <hr>
 <div class="container">
-    <table>
-        <thead>
-            <td></td>
-            <td>Name</td>
-            <td>Description</td>
-        </thead>
+    <div class="card-deck mb-3 text-center">
         {{ range . }}
-        <tr>
-            <td>
-                <img src="/assets/img/{{ .Image }}" width="80px" heght="100px" />
-            </td>
-            <td>{{ .Name }}</td>
-            <td>{{ .Description }}</td>
-        </tr>
+        <div class="card border-light shadow-sm" style="width: 18rem;">
+            <img src="/assets/img/{{ .Image }}" class="card-img-top" />
+            <div class="card-body">
+                <h4 class="card-title">{{ .Name }}</h4>
+                <p class="card-text"> {{ .Description }} </p>
+                <a href="#" class="card-link">Check Menu</a>
+            </div>
+        </div>
         {{ end }}
-    </table>
+    </div>
 </div>
 {{ end }}
