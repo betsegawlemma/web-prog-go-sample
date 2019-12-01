@@ -15,22 +15,22 @@ import (
 
 // AdminCategoryHandler handles category handler admin requests
 type AdminCategoryHandler struct {
-	Tmpl        *template.Template
-	CategorySrv menu.CategoryService
+	tmpl        *template.Template
+	categorySrv menu.CategoryService
 }
 
 // NewAdminCategoryHandler initializes and returns new AdminCateogryHandler
-func NewAdminCategoryHandler(t *template.Template, cs menu.CategoryService) *AdminCategoryHandler {
-	return &AdminCategoryHandler{Tmpl: t, CategorySrv: cs}
+func NewAdminCategoryHandler(T *template.Template, CS menu.CategoryService) *AdminCategoryHandler {
+	return &AdminCategoryHandler{tmpl: T, categorySrv: CS}
 }
 
 // AdminCategories handle requests on route /admin/categories
 func (ach *AdminCategoryHandler) AdminCategories(w http.ResponseWriter, r *http.Request) {
-	categories, err := ach.CategorySrv.Categories()
+	categories, err := ach.categorySrv.Categories()
 	if err != nil {
 		panic(err)
 	}
-	ach.Tmpl.ExecuteTemplate(w, "admin.categ.layout", categories)
+	ach.tmpl.ExecuteTemplate(w, "admin.categ.layout", categories)
 }
 
 // AdminCategoriesNew hanlde requests on route /admin/categories/new
@@ -52,7 +52,7 @@ func (ach *AdminCategoryHandler) AdminCategoriesNew(w http.ResponseWriter, r *ht
 
 		writeFile(&mf, fh.Filename)
 
-		err = ach.CategorySrv.StoreCategory(ctg)
+		err = ach.categorySrv.StoreCategory(ctg)
 
 		if err != nil {
 			panic(err)
@@ -62,7 +62,7 @@ func (ach *AdminCategoryHandler) AdminCategoriesNew(w http.ResponseWriter, r *ht
 
 	} else {
 
-		ach.Tmpl.ExecuteTemplate(w, "admin.categ.new.layout", nil)
+		ach.tmpl.ExecuteTemplate(w, "admin.categ.new.layout", nil)
 
 	}
 }
@@ -79,13 +79,13 @@ func (ach *AdminCategoryHandler) AdminCategoriesUpdate(w http.ResponseWriter, r 
 			panic(err)
 		}
 
-		cat, err := ach.CategorySrv.Category(id)
+		cat, err := ach.categorySrv.Category(id)
 
 		if err != nil {
 			panic(err)
 		}
 
-		ach.Tmpl.ExecuteTemplate(w, "admin.categ.update.layout", cat)
+		ach.tmpl.ExecuteTemplate(w, "admin.categ.update.layout", cat)
 
 	} else if r.Method == http.MethodPost {
 
@@ -105,7 +105,7 @@ func (ach *AdminCategoryHandler) AdminCategoriesUpdate(w http.ResponseWriter, r 
 
 		writeFile(&mf, ctg.Image)
 
-		err = ach.CategorySrv.UpdateCategory(ctg)
+		err = ach.categorySrv.UpdateCategory(ctg)
 
 		if err != nil {
 			panic(err)
@@ -132,7 +132,7 @@ func (ach *AdminCategoryHandler) AdminCategoriesDelete(w http.ResponseWriter, r 
 			panic(err)
 		}
 
-		err = ach.CategorySrv.DeleteCategory(id)
+		err = ach.categorySrv.DeleteCategory(id)
 
 		if err != nil {
 			panic(err)
