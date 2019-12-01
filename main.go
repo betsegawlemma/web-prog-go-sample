@@ -18,7 +18,7 @@ import (
 )
 
 var tmpl = template.Must(template.ParseGlob("delivery/web/templates/*"))
-var categoryService *service.CategoryService
+var categoryServ *service.CategoryServiceImpl
 
 func index(w http.ResponseWriter, r *http.Request) {
 
@@ -27,7 +27,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	categories, err := categoryService.Categories()
+	categories, err := categoryServ.Categories()
 	if err != nil {
 		panic(err)
 	}
@@ -52,7 +52,7 @@ func admin(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminCategories(w http.ResponseWriter, r *http.Request) {
-	categories, err := categoryService.Categories()
+	categories, err := categoryServ.Categories()
 	if err != nil {
 		panic(err)
 	}
@@ -77,7 +77,7 @@ func adminCategoriesNew(w http.ResponseWriter, r *http.Request) {
 
 		writeFile(&mf, fh.Filename)
 
-		err = categoryService.StoreCategory(ctg)
+		err = categoryServ.StoreCategory(ctg)
 
 		if err != nil {
 			panic(err)
@@ -103,7 +103,7 @@ func adminCategoriesUpdate(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		cat, err := categoryService.Category(id)
+		cat, err := categoryServ.Category(id)
 
 		if err != nil {
 			panic(err)
@@ -129,7 +129,7 @@ func adminCategoriesUpdate(w http.ResponseWriter, r *http.Request) {
 
 		writeFile(&mf, ctg.Image)
 
-		err = categoryService.UpdateCategory(ctg)
+		err = categoryServ.UpdateCategory(ctg)
 
 		if err != nil {
 			panic(err)
@@ -155,7 +155,7 @@ func adminCategoriesDelete(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		err = categoryService.DeleteCategory(id)
+		err = categoryServ.DeleteCategory(id)
 
 		if err != nil {
 			panic(err)
@@ -198,8 +198,8 @@ func main() {
 		panic(err)
 	}
 
-	catRepo := repository.NewPsqlCategoryRepository(dbconn)
-	categoryService = service.NewCategoryService(catRepo)
+	categoryRepo := repository.NewCategoryRepositoryImpl(dbconn)
+	categoryServ = service.NewCategoryServiceImpl(categoryRepo)
 
 	fs := http.FileServer(http.Dir("delivery/web/assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))

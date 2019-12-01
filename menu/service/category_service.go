@@ -5,18 +5,18 @@ import (
 	"github.com/betsegawlemma/restaurant/menu"
 )
 
-// CategoryService implements menu.CategoryService interface
-type CategoryService struct {
+// CategoryServiceImpl implements menu.CategoryService interface
+type CategoryServiceImpl struct {
 	categoryRepo menu.CategoryRepository
 }
 
-// NewCategoryService will create new CategoryService object
-func NewCategoryService(CatRepo menu.CategoryRepository) *CategoryService {
-	return &CategoryService{categoryRepo: CatRepo}
+// NewCategoryServiceImpl will create new CategoryService object
+func NewCategoryServiceImpl(CatRepo menu.CategoryRepository) *CategoryServiceImpl {
+	return &CategoryServiceImpl{categoryRepo: CatRepo}
 }
 
 // Categories returns list of categories
-func (cs *CategoryService) Categories() ([]entity.Category, error) {
+func (cs *CategoryServiceImpl) Categories() ([]entity.Category, error) {
 
 	categories, err := cs.categoryRepo.Categories()
 
@@ -28,7 +28,7 @@ func (cs *CategoryService) Categories() ([]entity.Category, error) {
 }
 
 // StoreCategory persists new category information
-func (cs *CategoryService) StoreCategory(category entity.Category) error {
+func (cs *CategoryServiceImpl) StoreCategory(category entity.Category) error {
 
 	err := cs.categoryRepo.StoreCategory(category)
 
@@ -40,7 +40,7 @@ func (cs *CategoryService) StoreCategory(category entity.Category) error {
 }
 
 // Category returns a category object with a given id
-func (cs *CategoryService) Category(id int) (entity.Category, error) {
+func (cs *CategoryServiceImpl) Category(id int) (entity.Category, error) {
 
 	c, err := cs.categoryRepo.Category(id)
 
@@ -52,7 +52,7 @@ func (cs *CategoryService) Category(id int) (entity.Category, error) {
 }
 
 // UpdateCategory updates a cateogory with new data
-func (cs *CategoryService) UpdateCategory(category entity.Category) error {
+func (cs *CategoryServiceImpl) UpdateCategory(category entity.Category) error {
 
 	err := cs.categoryRepo.UpdateCategory(category)
 
@@ -64,7 +64,7 @@ func (cs *CategoryService) UpdateCategory(category entity.Category) error {
 }
 
 // DeleteCategory delete a category by its id
-func (cs *CategoryService) DeleteCategory(id int) error {
+func (cs *CategoryServiceImpl) DeleteCategory(id int) error {
 
 	err := cs.categoryRepo.DeleteCategory(id)
 	if err != nil {

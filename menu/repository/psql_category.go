@@ -7,21 +7,20 @@ import (
 	"github.com/betsegawlemma/restaurant/entity"
 )
 
-// PsqlCategoryRepository implements the
-// menu.CategoryRepository interface
-type PsqlCategoryRepository struct {
+// CategoryRepositoryImpl implements the menu.CategoryRepository interface
+type CategoryRepositoryImpl struct {
 	conn *sql.DB
 }
 
-// NewPsqlCategoryRepository will create an object of PsqlCategoryRepository
-func NewPsqlCategoryRepository(Conn *sql.DB) *PsqlCategoryRepository {
-	return &PsqlCategoryRepository{conn: Conn}
+// NewCategoryRepositoryImpl will create an object of PsqlCategoryRepository
+func NewCategoryRepositoryImpl(Conn *sql.DB) *CategoryRepositoryImpl {
+	return &CategoryRepositoryImpl{conn: Conn}
 }
 
 // Categories returns all cateogories from the database
-func (pr *PsqlCategoryRepository) Categories() ([]entity.Category, error) {
+func (cri *CategoryRepositoryImpl) Categories() ([]entity.Category, error) {
 
-	rows, err := pr.conn.Query("SELECT * FROM categories;")
+	rows, err := cri.conn.Query("SELECT * FROM categories;")
 	if err != nil {
 		return nil, errors.New("Could not query the database")
 	}
@@ -42,9 +41,9 @@ func (pr *PsqlCategoryRepository) Categories() ([]entity.Category, error) {
 }
 
 // Category returns a category with a given id
-func (pr *PsqlCategoryRepository) Category(id int) (entity.Category, error) {
+func (cri *CategoryRepositoryImpl) Category(id int) (entity.Category, error) {
 
-	row := pr.conn.QueryRow("SELECT * FROM categories WHERE id = $1", id)
+	row := cri.conn.QueryRow("SELECT * FROM categories WHERE id = $1", id)
 
 	c := entity.Category{}
 
@@ -57,9 +56,9 @@ func (pr *PsqlCategoryRepository) Category(id int) (entity.Category, error) {
 }
 
 // UpdateCategory updates a given object with a new data
-func (pr *PsqlCategoryRepository) UpdateCategory(c entity.Category) error {
+func (cri *CategoryRepositoryImpl) UpdateCategory(c entity.Category) error {
 
-	_, err := pr.conn.Exec("UPDATE categories SET name=$1,description=$2, image=$3 WHERE id=$4", c.Name, c.Description, c.Image, c.ID)
+	_, err := cri.conn.Exec("UPDATE categories SET name=$1,description=$2, image=$3 WHERE id=$4", c.Name, c.Description, c.Image, c.ID)
 	if err != nil {
 		return errors.New("Update has failed")
 	}
@@ -68,9 +67,9 @@ func (pr *PsqlCategoryRepository) UpdateCategory(c entity.Category) error {
 }
 
 // DeleteCategory removes a category from a database by its id
-func (pr *PsqlCategoryRepository) DeleteCategory(id int) error {
+func (cri *CategoryRepositoryImpl) DeleteCategory(id int) error {
 
-	_, err := pr.conn.Exec("DELETE FROM categories WHERE id=$1", id)
+	_, err := cri.conn.Exec("DELETE FROM categories WHERE id=$1", id)
 	if err != nil {
 		return errors.New("Delete has failed")
 	}
@@ -79,9 +78,9 @@ func (pr *PsqlCategoryRepository) DeleteCategory(id int) error {
 }
 
 // StoreCategory stores new category information to database
-func (pr *PsqlCategoryRepository) StoreCategory(c entity.Category) error {
+func (cri *CategoryRepositoryImpl) StoreCategory(c entity.Category) error {
 
-	_, err := pr.conn.Exec("INSERT INTO categories (name,description,image) values($1, $2, $3)", c.Name, c.Description, c.Image)
+	_, err := cri.conn.Exec("INSERT INTO categories (name,description,image) values($1, $2, $3)", c.Name, c.Description, c.Image)
 	if err != nil {
 		return errors.New("Insertion has failed")
 	}
