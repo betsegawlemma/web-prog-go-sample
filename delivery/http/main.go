@@ -1,10 +1,7 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/betsegawlemma/restaurant/entity"
-	"github.com/betsegawlemma/restaurant/menu/repository"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -29,30 +26,6 @@ func main() {
 
 	// createTables(dbconn)
 
-	catRepo := repository.NewCategoryGormRepo(dbconn)
-	//ordeRepo := repository.NewOrderGormRepo(dbconn)
-	menRepo := repository.NewItemGormRepo(dbconn)
-
-	//ords, errs := ordeRepo.CustomerOrders(usr)
-
-	cat01 := entity.Category{Name: "Lunch", Description: "Lorem Ipsum", Image: "lunch.png"}
-	cat02 := entity.Category{Name: "Breakfast", Description: "Lorem Ipsum", Image: "breakfast.png"}
-
-	c02, _ := catRepo.StoreCategory(&cat02)
-	c01, _ := catRepo.StoreCategory(&cat01)
-
-	cts1 := []entity.Category{*c01, *c02}
-	cts2 := []entity.Category{*c01}
-
-	men01 := entity.Item{Name: "Menu01", Price: 20.5, Description: "Lorem Ipsum", Image: "menu03.png", Categories: cts1}
-	men02 := entity.Item{Name: "Menu02", Price: 20.5, Description: "Lorem Ipsum", Image: "menu04.png", Categories: cts2}
-
-	menRepo.StoreItem(&men01)
-	menRepo.StoreItem(&men02)
-	men001, _ := catRepo.ItemsInCategory(c01)
-	men002, _ := catRepo.ItemsInCategory(c02)
-	fmt.Println(men001)
-	fmt.Println(men002)
 	/*
 		tmpl := template.Must(template.ParseGlob("ui/templates/*"))
 
