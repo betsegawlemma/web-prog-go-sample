@@ -41,7 +41,7 @@ func (cri *CategoryRepositoryImpl) Categories() ([]entity.Category, error) {
 }
 
 // Category returns a category with a given id
-func (cri *CategoryRepositoryImpl) Category(id int) (entity.Category, error) {
+func (cri *CategoryRepositoryImpl) Category(id uint) (entity.Category, error) {
 
 	row := cri.conn.QueryRow("SELECT * FROM categories WHERE id = $1", id)
 
@@ -67,7 +67,7 @@ func (cri *CategoryRepositoryImpl) UpdateCategory(c entity.Category) error {
 }
 
 // DeleteCategory removes a category from a database by its id
-func (cri *CategoryRepositoryImpl) DeleteCategory(id int) error {
+func (cri *CategoryRepositoryImpl) DeleteCategory(id uint) error {
 
 	_, err := cri.conn.Exec("DELETE FROM categories WHERE id=$1", id)
 	if err != nil {

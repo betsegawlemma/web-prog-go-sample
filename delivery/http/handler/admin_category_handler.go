@@ -20,15 +20,15 @@ type AdminCategoryHandler struct {
 }
 
 // NewAdminCategoryHandler initializes and returns new AdminCateogryHandler
-func NewAdminCategoryHandler(T *template.Template, CS menu.CategoryService) *AdminCategoryHandler {
-	return &AdminCategoryHandler{tmpl: T, categorySrv: CS}
+func NewAdminCategoryHandler(t *template.Template, cs menu.CategoryService) *AdminCategoryHandler {
+	return &AdminCategoryHandler{tmpl: t, categorySrv: cs}
 }
 
 // AdminCategories handle requests on route /admin/categories
 func (ach *AdminCategoryHandler) AdminCategories(w http.ResponseWriter, r *http.Request) {
-	categories, err := ach.categorySrv.Categories()
-	if err != nil {
-		panic(err)
+	categories, errs := ach.categorySrv.Categories()
+	if errs != nil {
+		panic(errs)
 	}
 	ach.tmpl.ExecuteTemplate(w, "admin.categ.layout", categories)
 }
@@ -38,7 +38,7 @@ func (ach *AdminCategoryHandler) AdminCategoriesNew(w http.ResponseWriter, r *ht
 
 	if r.Method == http.MethodPost {
 
-		ctg := entity.Category{}
+		ctg := &entity.Category{}
 		ctg.Name = r.FormValue("name")
 		ctg.Description = r.FormValue("description")
 
@@ -52,10 +52,10 @@ func (ach *AdminCategoryHandler) AdminCategoriesNew(w http.ResponseWriter, r *ht
 
 		writeFile(&mf, fh.Filename)
 
-		err = ach.categorySrv.StoreCategory(ctg)
+		errs := ach.categorySrv.StoreCategory(ctg)
 
-		if err != nil {
-			panic(err)
+		if errs != nil {
+			panic(errs)
 		}
 
 		http.Redirect(w, r, "/admin/categories", http.StatusSeeOther)
@@ -79,18 +79,19 @@ func (ach *AdminCategoryHandler) AdminCategoriesUpdate(w http.ResponseWriter, r 
 			panic(err)
 		}
 
-		cat, err := ach.categorySrv.Category(id)
+		cat, errs := ach.categorySrv.Category(uint(id))
 
-		if err != nil {
-			panic(err)
+		if errs != nil {
+			panic(errs)
 		}
 
 		ach.tmpl.ExecuteTemplate(w, "admin.categ.update.layout", cat)
 
 	} else if r.Method == http.MethodPost {
 
-		ctg := entity.Category{}
-		ctg.ID, _ = strconv.Atoi(r.FormValue("id"))
+		ctg := &entity.Category{}
+		id, _ := strconv.Atoi(r.FormValue("id"))
+		ctg.ID = uint(id)
 		ctg.Name = r.FormValue("name")
 		ctg.Description = r.FormValue("description")
 		ctg.Image = r.FormValue("image")
@@ -105,10 +106,10 @@ func (ach *AdminCategoryHandler) AdminCategoriesUpdate(w http.ResponseWriter, r 
 
 		writeFile(&mf, ctg.Image)
 
-		err = ach.categorySrv.UpdateCategory(ctg)
+		errs := ach.categorySrv.UpdateCategory(ctg)
 
-		if err != nil {
-			panic(err)
+		if errs != nil {
+			panic(errs)
 		}
 
 		http.Redirect(w, r, "/admin/categories", http.StatusSeeOther)
@@ -132,7 +133,7 @@ func (ach *AdminCategoryHandler) AdminCategoriesDelete(w http.ResponseWriter, r 
 			panic(err)
 		}
 
-		err = ach.categorySrv.DeleteCategory(id)
+		err = ach.categorySrv.DeleteCategory(uint(id))
 
 		if err != nil {
 			panic(err)

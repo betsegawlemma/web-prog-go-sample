@@ -1,0 +1,28 @@
+{{ define "admin.roles.new.layout" }}
+{{ template "admin.navbar" . }}
+{{ template "admin.roles.new.content" . }}
+{{ template "admin.footer" . }}
+{{ end }}
+
+{{ define "admin.roles.new.content"}}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2>Add New User Role</h2>
+  </div>
+  <div class="container">
+    <form method="POST" action="/admin/roles/new">
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">user Role Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="name" id="name" placeholder="User Role Name">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <button type="submit" class="btn btn-primary float-right">Add Role</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+{{ end }}

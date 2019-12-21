@@ -5,70 +5,85 @@ import (
 	"github.com/betsegawlemma/restaurant/menu"
 )
 
-// CategoryServiceImpl implements menu.CategoryService interface
-type CategoryServiceImpl struct {
+// CategoryService implements menu.CategoryService interface
+type CategoryService struct {
 	categoryRepo menu.CategoryRepository
 }
 
-// NewCategoryServiceImpl will create new CategoryService object
-func NewCategoryServiceImpl(CatRepo menu.CategoryRepository) *CategoryServiceImpl {
-	return &CategoryServiceImpl{categoryRepo: CatRepo}
+// NewCategoryService will create new CategoryService object
+func NewCategoryService(CatRepo menu.CategoryRepository) menu.CategoryService {
+	return &CategoryService{categoryRepo: CatRepo}
 }
 
 // Categories returns list of categories
-func (cs *CategoryServiceImpl) Categories() ([]entity.Category, error) {
+func (cs *CategoryService) Categories() ([]entity.Category, []error) {
 
-	categories, err := cs.categoryRepo.Categories()
+	categories, errs := cs.categoryRepo.Categories()
 
-	if err != nil {
-		return nil, err
+	if len(errs) > 0 {
+		return nil, errs
 	}
 
 	return categories, nil
 }
 
 // StoreCategory persists new category information
-func (cs *CategoryServiceImpl) StoreCategory(category entity.Category) error {
+func (cs *CategoryService) StoreCategory(category *entity.Category) (*entity.Category, []error) {
 
-	err := cs.categoryRepo.StoreCategory(category)
+	cat, errs := cs.categoryRepo.StoreCategory(category)
 
-	if err != nil {
-		return err
+	if len(errs) > 0 {
+		return nil, errs
 	}
 
-	return nil
+	return cat, nil
 }
 
 // Category returns a category object with a given id
-func (cs *CategoryServiceImpl) Category(id int) (entity.Category, error) {
+func (cs *CategoryService) Category(id uint) (*entity.Category, []error) {
 
-	c, err := cs.categoryRepo.Category(id)
+	c, errs := cs.categoryRepo.Category(id)
 
-	if err != nil {
-		return c, err
+	if len(errs) > 0 {
+		return c, errs
 	}
 
 	return c, nil
 }
 
 // UpdateCategory updates a cateogory with new data
-func (cs *CategoryServiceImpl) UpdateCategory(category entity.Category) error {
+func (cs *CategoryService) UpdateCategory(category *entity.Category) (*entity.Category, []error) {
 
-	err := cs.categoryRepo.UpdateCategory(category)
+	cat, errs := cs.categoryRepo.UpdateCategory(category)
 
-	if err != nil {
-		return err
+	if len(errs) > 0 {
+		return nil, errs
 	}
 
-	return nil
+	return cat, nil
 }
 
 // DeleteCategory delete a category by its id
-func (cs *CategoryServiceImpl) DeleteCategory(id int) error {
+func (cs *CategoryService) DeleteCategory(id uint) (*entity.Category, []error) {
 
-	err := cs.categoryRepo.DeleteCategory(id)
-	if err != nil {
-		return err
+	cat, errs := cs.categoryRepo.DeleteCategory(id)
+
+	if len(errs) > 0 {
+		return nil, errs
 	}
-	return nil
+
+	return cat, nil
+}
+
+// ItemsInCategory returns list of menu items in a given category
+func (cs *CategoryService) ItemsInCategory(category *entity.Category) ([]entity.Item, []error) {
+
+	cts, errs := cs.categoryRepo.ItemsInCategory(category)
+
+	if len(errs) > 0 {
+		return nil, errs
+	}
+
+	return cts, nil
+
 }

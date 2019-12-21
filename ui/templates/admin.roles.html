@@ -1,0 +1,37 @@
+{{ define "admin.roles.layout" }}
+{{ template "admin.navbar" . }}
+{{ template "admin.roles.content" . }}
+{{ template "admin.footer" . }}
+{{ end }}
+
+{{ define "admin.roles.content"}}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>User Roles</h2>
+    </div>
+    <div class="pt-3 pb-2 mb-3">
+        <a class="btn btn-primary btn-lg" href="/admin/roles/new" role="button">New Role</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+            {{ range . }}
+          <tr>
+            <th scope="row"> {{ .ID }} </th>
+            <td> {{ .Name }} </td>
+            <td> <a href="/admin/roles/update?id={{ .ID }}">Edit</a> </td>
+            <td> <a href="/admin/roles/delete?id={{ .ID }}">Delete</a> </td>
+          </tr>
+          {{ end }}
+          </tbody>
+          </table>
+</main>
+{{ end }}
