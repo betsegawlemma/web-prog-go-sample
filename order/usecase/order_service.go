@@ -2,16 +2,16 @@ package service
 
 import (
 	"github.com/betsegawlemma/restaurant/entity"
-	"github.com/betsegawlemma/restaurant/menu"
+	"github.com/betsegawlemma/restaurant/order"
 )
 
 // OrderService implements menu.OrderService interface
 type OrderService struct {
-	orderRepo menu.OrderRepository
+	orderRepo order.OrderRepository
 }
 
 // NewOrderService returns new OrderService object
-func NewOrderService(orderRepository menu.OrderRepository) menu.OrderService {
+func NewOrderService(orderRepository order.OrderRepository) order.OrderService {
 	return &OrderService{orderRepo: orderRepository}
 }
 

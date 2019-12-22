@@ -1,8 +1,8 @@
 package repository
 
 import (
+	"github.com/betsegawlemma/restaurant/comment"
 	"github.com/betsegawlemma/restaurant/entity"
-	"github.com/betsegawlemma/restaurant/menu"
 	"github.com/jinzhu/gorm"
 )
 
@@ -12,7 +12,7 @@ type CommentGormRepo struct {
 }
 
 // NewCommentGormRepo returns new object of CommentGormRepo
-func NewCommentGormRepo(db *gorm.DB) menu.CommentRepository {
+func NewCommentGormRepo(db *gorm.DB) comment.CommentRepository {
 	return &CommentGormRepo{conn: db}
 }
 

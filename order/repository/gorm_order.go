@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/betsegawlemma/restaurant/entity"
-	"github.com/betsegawlemma/restaurant/menu"
+	"github.com/betsegawlemma/restaurant/order"
 	"github.com/jinzhu/gorm"
 )
 
@@ -12,7 +12,7 @@ type OrderGormRepo struct {
 }
 
 // NewOrderGormRepo returns new object of OrderGormRepo
-func NewOrderGormRepo(db *gorm.DB) menu.OrderRepository {
+func NewOrderGormRepo(db *gorm.DB) order.OrderRepository {
 	return &OrderGormRepo{conn: db}
 }
 

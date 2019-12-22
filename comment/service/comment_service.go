@@ -1,17 +1,17 @@
 package service
 
 import (
+	"github.com/betsegawlemma/restaurant/comment"
 	"github.com/betsegawlemma/restaurant/entity"
-	"github.com/betsegawlemma/restaurant/menu"
 )
 
 // CommentService implements menu.CommentService interface
 type CommentService struct {
-	commentRepo menu.CommentRepository
+	commentRepo comment.CommentRepository
 }
 
 // NewCommentService returns a new CommentService object
-func NewCommentService(commRepo menu.CommentRepository) menu.CommentService {
+func NewCommentService(commRepo comment.CommentRepository) comment.CommentService {
 	return &CommentService{commentRepo: commRepo}
 }
 

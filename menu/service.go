@@ -48,16 +48,6 @@ type UserService interface {
 	StoreUser(user *entity.User) (*entity.User, []error)
 }
 
-//OrderService specifies customer menu order related services
-type OrderService interface {
-	Orders() ([]entity.Order, []error)
-	Order(id uint) (*entity.Order, []error)
-	CustomerOrders(customer *entity.User) ([]entity.Order, []error)
-	UpdateOrder(order *entity.Order) (*entity.Order, []error)
-	DeleteOrder(id uint) (*entity.Order, []error)
-	StoreOrder(order *entity.Order) (*entity.Order, []error)
-}
-
 // CommentService specifies customer comment related service
 type CommentService interface {
 	Comments() ([]entity.Comment, []error)

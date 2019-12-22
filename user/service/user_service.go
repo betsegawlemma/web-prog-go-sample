@@ -2,16 +2,16 @@ package service
 
 import (
 	"github.com/betsegawlemma/restaurant/entity"
-	"github.com/betsegawlemma/restaurant/menu"
+	"github.com/betsegawlemma/restaurant/user"
 )
 
 // UserService implements menu.UserService interface
 type UserService struct {
-	userRepo menu.UserRepository
+	userRepo user.UserRepository
 }
 
 // NewUserService  returns a new UserService object
-func NewUserService(userRepository menu.UserRepository) menu.UserService {
+func NewUserService(userRepository user.UserRepository) user.UserService {
 	return &UserService{userRepo: userRepository}
 }
 

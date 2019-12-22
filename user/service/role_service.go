@@ -2,16 +2,16 @@ package service
 
 import (
 	"github.com/betsegawlemma/restaurant/entity"
-	"github.com/betsegawlemma/restaurant/menu"
+	"github.com/betsegawlemma/restaurant/user"
 )
 
 // RoleService implements menu.RoleService interface
 type RoleService struct {
-	roleRepo menu.RoleRepository
+	roleRepo user.RoleRepository
 }
 
 // NewRoleService  returns new RoleService
-func NewRoleService(RoleRepo menu.RoleRepository) menu.RoleService {
+func NewRoleService(RoleRepo user.RoleRepository) user.RoleService {
 	return &RoleService{roleRepo: RoleRepo}
 }
 
