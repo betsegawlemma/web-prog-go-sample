@@ -21,15 +21,6 @@ type ItemService interface {
 	StoreItem(item *entity.Item) (*entity.Item, []error)
 }
 
-// RoleService speifies application user role related services
-type RoleService interface {
-	Roles() ([]entity.Role, []error)
-	Role(id uint) (*entity.Role, []error)
-	UpdateRole(role *entity.Role) (*entity.Role, []error)
-	DeleteRole(id uint) (*entity.Role, []error)
-	StoreRole(role *entity.Role) (*entity.Role, []error)
-}
-
 // IngredientService speifies food item ingredints related services
 type IngredientService interface {
 	Ingredients() ([]entity.Ingredient, []error)
@@ -37,22 +28,4 @@ type IngredientService interface {
 	UpdateIngredient(ingredient *entity.Ingredient) (*entity.Ingredient, []error)
 	DeleteIngredient(id uint) (*entity.Ingredient, []error)
 	StoreIngredient(ingredient *entity.Ingredient) (*entity.Ingredient, []error)
-}
-
-// UserService specifies application user related services
-type UserService interface {
-	Users() ([]entity.User, []error)
-	User(id uint) (*entity.User, []error)
-	UpdateUser(user *entity.User) (*entity.User, []error)
-	DeleteUser(id uint) (*entity.User, []error)
-	StoreUser(user *entity.User) (*entity.User, []error)
-}
-
-// CommentService specifies customer comment related service
-type CommentService interface {
-	Comments() ([]entity.Comment, []error)
-	Comment(id uint) (*entity.Comment, []error)
-	UpdateComment(comment *entity.Comment) (*entity.Comment, []error)
-	DeleteComment(id uint) (*entity.Comment, []error)
-	StoreComment(comment *entity.Comment) (*entity.Comment, []error)
 }
