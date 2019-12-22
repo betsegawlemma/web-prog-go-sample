@@ -52,9 +52,9 @@ func (ach *AdminCategoryHandler) AdminCategoriesNew(w http.ResponseWriter, r *ht
 
 		writeFile(&mf, fh.Filename)
 
-		errs := ach.categorySrv.StoreCategory(ctg)
+		_, errs := ach.categorySrv.StoreCategory(ctg)
 
-		if errs != nil {
+		if len(errs) > 0 {
 			panic(errs)
 		}
 
@@ -81,7 +81,7 @@ func (ach *AdminCategoryHandler) AdminCategoriesUpdate(w http.ResponseWriter, r 
 
 		cat, errs := ach.categorySrv.Category(uint(id))
 
-		if errs != nil {
+		if len(errs) > 0 {
 			panic(errs)
 		}
 
@@ -106,9 +106,9 @@ func (ach *AdminCategoryHandler) AdminCategoriesUpdate(w http.ResponseWriter, r 
 
 		writeFile(&mf, ctg.Image)
 
-		errs := ach.categorySrv.UpdateCategory(ctg)
+		_, errs := ach.categorySrv.UpdateCategory(ctg)
 
-		if errs != nil {
+		if len(errs) > 0 {
 			panic(errs)
 		}
 
@@ -133,9 +133,9 @@ func (ach *AdminCategoryHandler) AdminCategoriesDelete(w http.ResponseWriter, r 
 			panic(err)
 		}
 
-		err = ach.categorySrv.DeleteCategory(uint(id))
+		_, errs := ach.categorySrv.DeleteCategory(uint(id))
 
-		if err != nil {
+		if len(errs) > 0 {
 			panic(err)
 		}
 
