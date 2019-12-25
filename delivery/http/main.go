@@ -1,7 +1,13 @@
 package main
 
 import (
+	"html/template"
+	"net/http"
+
+	"github.com/betsegawlemma/restaurant/delivery/http/handler"
 	"github.com/betsegawlemma/restaurant/entity"
+	mrepim "github.com/betsegawlemma/restaurant/menu/repository"
+	msrvim "github.com/betsegawlemma/restaurant/menu/service"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -26,35 +32,27 @@ func main() {
 
 	// createTables(dbconn)
 
-	/*
-		tmpl := template.Must(template.ParseGlob("ui/templates/*"))
+	tmpl := template.Must(template.ParseGlob("ui/templates/*"))
 
-		categoryRepo := repository.NewCategoryRepositoryImpl(dbconn)
-		categoryServ := service.NewCategoryServiceImpl(categoryRepo)
+	categoryRepo := mrepim.NewCategoryGormRepo(dbconn)
+	categoryServ := msrvim.NewCategoryService(categoryRepo)
 
-		roleRepo := repository.NewRoleRepositoryImpl(dbconn)
-		roleSrv := service.NewRoleServiceImpl(roleRepo)
+	adminCatgHandler := handler.NewAdminCategoryHandler(tmpl, categoryServ)
+	menuHandler := handler.NewMenuHandler(tmpl, categoryServ)
 
-		adminCatgHandler := handler.NewAdminCategoryHandler(tmpl, categoryServ)
-		menuHandler := handler.NewMenuHandler(tmpl, categoryServ)
-		roleHandler := handler.NewAdminRoleHandler(tmpl, roleSrv)
+	fs := http.FileServer(http.Dir("ui/assets"))
+	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
-		fs := http.FileServer(http.Dir("ui/assets"))
-		http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	http.HandleFunc("/", menuHandler.Index)
+	http.HandleFunc("/about", menuHandler.About)
+	http.HandleFunc("/contact", menuHandler.Contact)
+	http.HandleFunc("/menu", menuHandler.Menu)
+	http.HandleFunc("/admin", menuHandler.Admin)
 
-		http.HandleFunc("/", menuHandler.Index)
-		http.HandleFunc("/about", menuHandler.About)
-		http.HandleFunc("/contact", menuHandler.Contact)
-		http.HandleFunc("/menu", menuHandler.Menu)
-		http.HandleFunc("/admin", menuHandler.Admin)
+	http.HandleFunc("/admin/categories", adminCatgHandler.AdminCategories)
+	http.HandleFunc("/admin/categories/new", adminCatgHandler.AdminCategoriesNew)
+	http.HandleFunc("/admin/categories/update", adminCatgHandler.AdminCategoriesUpdate)
+	http.HandleFunc("/admin/categories/delete", adminCatgHandler.AdminCategoriesDelete)
 
-		http.HandleFunc("/admin/categories", adminCatgHandler.AdminCategories)
-		http.HandleFunc("/admin/categories/new", adminCatgHandler.AdminCategoriesNew)
-		http.HandleFunc("/admin/categories/update", adminCatgHandler.AdminCategoriesUpdate)
-		http.HandleFunc("/admin/categories/delete", adminCatgHandler.AdminCategoriesDelete)
-
-		http.HandleFunc("/admin/roles/new", roleHandler.AdminRolesNew)
-
-		http.ListenAndServe(":8181", nil)
-	*/
+	http.ListenAndServe(":8181", nil)
 }
