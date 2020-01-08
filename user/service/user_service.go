@@ -5,7 +5,7 @@ import (
 	"github.com/betsegawlemma/restaurant/user"
 )
 
-// UserService implements menu.UserService interface
+// UserService implements user.UserService interface
 type UserService struct {
 	userRepo user.UserRepository
 }
@@ -27,6 +27,15 @@ func (us *UserService) Users() ([]entity.User, []error) {
 // User retrieves an application user by its id
 func (us *UserService) User(id uint) (*entity.User, []error) {
 	usr, errs := us.userRepo.User(id)
+	if len(errs) > 0 {
+		return nil, errs
+	}
+	return usr, errs
+}
+
+// UserByEmail retrieves an application user by its email address
+func (us *UserService) UserByEmail(email string) (*entity.User, []error) {
+	usr, errs := us.userRepo.UserByEmail(email)
 	if len(errs) > 0 {
 		return nil, errs
 	}
@@ -58,4 +67,25 @@ func (us *UserService) StoreUser(user *entity.User) (*entity.User, []error) {
 		return nil, errs
 	}
 	return usr, errs
+}
+
+// PhoneExists check if there is a user with a given phone number
+func (us *UserService) PhoneExists(phone string) bool {
+	exists := us.userRepo.PhoneExists(phone)
+	return exists
+}
+
+// EmailExists checks if there exist a user with a given email address
+func (us *UserService) EmailExists(email string) bool {
+	exists := us.userRepo.EmailExists(email)
+	return exists
+}
+
+// UserRoles returns list of roles a user has
+func (us *UserService) UserRoles(user *entity.User) ([]entity.Role, []error) {
+	userRoles, errs := us.userRepo.UserRoles(user)
+	if len(errs) > 0 {
+		return nil, errs
+	}
+	return userRoles, errs
 }

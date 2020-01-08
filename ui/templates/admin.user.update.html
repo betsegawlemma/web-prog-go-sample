@@ -1,0 +1,72 @@
+{{ define "admin.user.update.layout" }}
+{{ template "admin.navbar" . }}
+{{ template "admin.user.update.content" . }}
+{{ template "admin.footer" . }}
+{{ end }}
+
+{{ define "admin.user.update.content"}}
+<style>
+    .form-account {
+        width: 100%;
+        max-width: 500px;
+        padding: 15px;
+    }
+
+    .form-account .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+    }
+</style>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Create Account</h2>
+    </div>
+    <form class="form-account" method="POST" action="/admin/users/update">
+        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+        <input class="form-control" type='hidden' name='userid' value='{{ .Values.Get "userid" }}' />
+        <div class="col-auto">
+            <label for='fullname' class='col-form-label'>Full Name</label>
+            {{with .VErrors.Get "fullname"}}
+            <label class="text-danger">{{.}}</label>
+            {{end}}
+            <input type='text' class='form-control' name='fullname' id='fullname' value='{{ .Values.Get "fullname" }}'
+                required autofocus placeholder='Full Name'>
+        </div>
+        <div class="col-auto">
+            <label for='email' class='col-form-label'>Email</label>
+            {{with .VErrors.Get "email"}}
+            <label class="text-danger">{{.}}</label>
+            {{end}}
+            <input type='email' class='form-control' name='email' id='email' value='{{ .Values.Get "email" }}' required
+                placeholder='Email Address'>
+        </div>
+        <div class="col-auto">
+            <label for='phone' class='col-form-label'>Phone</label>
+            {{with .VErrors.Get "phone"}}
+            <label class="text-danger">{{.}}</label>
+            {{end}}
+            <input type='text' class='form-control' name='phone' id='phone' value='{{ .Values.Get "phone" }}' required
+                placeholder='Phone Number'>
+        </div>
+        <div class="col-auto">
+            <label for='role' class='col-form-label'>Role (Current: {{ .Values.Get "rolename" }})</label>
+            {{with .VErrors.Get "role"}}
+            <label class="text-danger">{{.}}</label>
+            {{end}}
+            <select name='role' id='role' class='form-control'>
+                <option value='' disabled selected>Choose Role</option>
+                {{ range .Roles }}
+                <option value='{{ .ID }}'> {{ .Name }}</option>
+                {{ end }}
+            </select>
+        </div>
+        <button type='submit' class='btn btn-primary float-right'>Update Account</button>
+    </form>
+</main>
+
+{{ end }}

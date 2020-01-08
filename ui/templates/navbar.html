@@ -19,6 +19,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
+
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
@@ -32,6 +33,12 @@
                     <a class="nav-link" href="contact">Contact</a>
                 </li>
             </ul>
+            <a class="nav-link" href="signup">Sign Up</a>
+            <a class="nav-link" href="login">Login</a>
+            <form method="POST" action="/logout" class="form-inline mt-2 mt-md-0">
+                <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+            </form>
         </div>
     </nav>
     {{ end }}

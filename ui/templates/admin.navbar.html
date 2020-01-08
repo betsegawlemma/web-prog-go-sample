@@ -15,6 +15,10 @@
 <body>
     <nav class="navbar navbar-light fixed-top flex-md-nowrap p-0" style="background-color: #e3f2fd;">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">3Y Restaurant</a>
+        <form method="POST" action="/logout" class="form-inline mt-2 mt-md-0">
+            <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+            <button class="btn btn-outline-success my-2 my-sm-3" type="submit">Logout</button>
+        </form>
     </nav>
 
     <div class="container-fluid">
@@ -55,7 +59,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/admin/roles">
                                 <span data-feather="roles"></span>
-                              User Roles
+                                User Roles
                             </a>
                         </li>
                         <li class="nav-item">
@@ -68,6 +72,6 @@
 
                 </div>
             </nav>
-            </div>
-            </div>
-            {{ end }}
+        </div>
+    </div>
+    {{ end }}

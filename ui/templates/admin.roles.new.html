@@ -11,6 +11,7 @@
   </div>
   <div class="container">
     <form method="POST" action="/admin/roles/new">
+      <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
       <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">user Role Name</label>
         <div class="col-sm-10">

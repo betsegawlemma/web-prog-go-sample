@@ -36,6 +36,16 @@ func (roleRepo *RoleGormRepo) Role(id uint) (*entity.Role, []error) {
 	return &role, errs
 }
 
+// RoleByName retrieves a role by its name from the database
+func (roleRepo *RoleGormRepo) RoleByName(name string) (*entity.Role, []error) {
+	role := entity.Role{}
+	errs := roleRepo.conn.Find(&role, "name=?", name).GetErrors()
+	if len(errs) > 0 {
+		return nil, errs
+	}
+	return &role, errs
+}
+
 // UpdateRole updates a given user role in the database
 func (roleRepo *RoleGormRepo) UpdateRole(role *entity.Role) (*entity.Role, []error) {
 	r := role

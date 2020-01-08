@@ -26,6 +26,15 @@ func (rs *RoleService) Roles() ([]entity.Role, []error) {
 
 }
 
+// RoleByName returns a role identified by its name
+func (rs *RoleService) RoleByName(name string) (*entity.Role, []error) {
+	role, errs := rs.roleRepo.RoleByName(name)
+	if len(errs) > 0 {
+		return nil, errs
+	}
+	return role, errs
+}
+
 // Role retrievs a given user role by its id
 func (rs *RoleService) Role(id uint) (*entity.Role, []error) {
 	rl, errs := rs.roleRepo.Role(id)

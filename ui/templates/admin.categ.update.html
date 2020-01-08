@@ -11,24 +11,31 @@
   </div>
   <div class="container">
     <form method="POST" action="/admin/categories/update" enctype="multipart/form-data">
-      <input type="hidden" name="id" value="{{ .ID }}" />
-      <input type="hidden" name="image" value="{{ .Image }}" />
+      <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+      <input type="hidden" name="catid" value='{{ .Values.Get "catid" }}' />
       <div class="form-group row">
-        <label for="name" class="col-sm-2 col-form-label">Category Name</label>
+        <label for="catname" class="col-sm-2 col-form-label">Category Name</label>
+        {{with .VErrors.Get "catname"}}
+        <label class="col-sm-2 col-form-label text-danger">{{.}}</label>
+        {{end}}
         <div class="col-sm-10">
-          <input type="text" class="form-control" name="name" id="name" placeholder="Category Name" value="{{ if .Name }} {{ .Name }} {{ end }}">
+          <input type="text" class="form-control" name="catname" id="catname" placeholder="Category Name"
+            value='{{ .Values.Get "catname" }}'>
         </div>
       </div>
       <div class="form-group row">
-        <label for="description" class="col-sm-2 col-form-label">Description</label>
+        <label for="catdesc" class="col-sm-2 col-form-label">Description</label>
+        {{with .VErrors.Get "catdesc"}}
+        <label class="col-sm-2 col-form-label text-danger">{{.}}</label>
+        {{end}}
         <div class="col-sm-10">
-          <textarea class="form-control" name="description" id="description">{{ if .Description }} {{ .Description }} {{ end }}</textarea>
+          <textarea class="form-control" name="catdesc" id="catdesc">{{ .Values.Get "catdesc" }}</textarea>
         </div>
       </div>
-        <div class="col-sm-10">
-       <img src="/assets/img/{{ .Image }}" width="80px" height="80px" />   
-        </div>
       <div class="form-group">
+        <label for="catimg" class="col-sm-2 col-form-label">Current Image</label>
+        <input type="hidden" name="imgname" value='{{ .Values.Get "catimg" }}' />
+        <img src='/assets/img/{{ .Values.Get "catimg" }}' width="80px" height="80px" />
         <label for="catimg" class="col-sm-2 col-form-label">Upload New Image</label>
         <div class="col-sm-10">
           <input type="file" class="form-control-file" name="catimg" id="catimg">
