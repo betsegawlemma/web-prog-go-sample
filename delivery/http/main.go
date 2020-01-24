@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/betsegawlemma/restaurant/delivery/http/handler"
@@ -31,7 +33,10 @@ func main() {
 	csrfSignKey := []byte(rtoken.GenerateRandomID(32))
 	tmpl := template.Must(template.ParseGlob("ui/templates/*"))
 
-	dbconn, err := gorm.Open("postgres", "postgres://postgres:P@$$w0rdD2@localhost/restaurantdb?sslmode=disable")
+	connStr := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable", os.Getenv("DBUSER"),
+		os.Getenv("DBPASS"), os.Getenv("DBHOST"), os.Getenv("DBNAME"))
+	//"postgres://postgres:P@$$w0rdD2@localhost/restaurantdb?sslmode=disable"
+	dbconn, err := gorm.Open("postgres", connStr)
 
 	if err != nil {
 		panic(err)
@@ -80,7 +85,9 @@ func main() {
 	http.Handle("/logout", uh.Authenticated(http.HandlerFunc(uh.Logout)))
 	http.HandleFunc("/signup", uh.Signup)
 
-	http.ListenAndServe(":8181", nil)
+	port := fmt.Sprintf(":%s", os.Getenv("HPORT"))
+
+	http.ListenAndServe(port, nil)
 }
 
 func configSess() *entity.Session {
