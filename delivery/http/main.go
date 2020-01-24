@@ -35,7 +35,6 @@ func main() {
 
 	connStr := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable", os.Getenv("DBUSER"),
 		os.Getenv("DBPASS"), os.Getenv("DBHOST"), os.Getenv("DBNAME"))
-	//"postgres://postgres:P@$$w0rdD2@localhost/restaurantdb?sslmode=disable"
 	dbconn, err := gorm.Open("postgres", connStr)
 
 	if err != nil {
